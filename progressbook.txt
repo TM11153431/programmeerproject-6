@@ -1,0 +1,2 @@
+07/06: Working on crawler which finds all connections between checkpoints on the map. Should only find the shortest paths and not accept double findings.
+This all still has to be validated, however.
