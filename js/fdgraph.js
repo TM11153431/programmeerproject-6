@@ -1,6 +1,6 @@
 /**
- * Name: Laura Ruis
- * Student number: 10158006
+ * Name: Sven van Dam
+ * Student number: 10529772
  * Programmeerproject
  * VAST Challenge 2017
  */
@@ -97,9 +97,18 @@ window.onload = function() {
                         else
                             return "lightgrey";
                     });
+                    link.style("stroke-opacity", function(l) {
+                        if ((d === l.source || d === l.target) === false) {
+                            return 0.1;
+                        }
+                        else {
+                            return 1;
+                        }
+                    });
                 })
                 .on('mouseout', function() {
                     link.style('stroke', "lightgrey");
+                    link.style("stroke-opacity", 1);
                 });
         }
     });
