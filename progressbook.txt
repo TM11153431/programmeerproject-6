@@ -8,6 +8,11 @@ Should only find the shortest paths and not accept double findings.
 This all still has to be validated, however. A few checkpoints should be checked by hand.
 These results are then compared to the results of the crawler.
 
-Laura and Peter are working on the processing of the datapoints and a first version of a calendar.
+Laura and Peter are working on the processing of the data points and a first version of a calendar.
 
 Summary: Processing of the map nearly done.
+
+08/06:
+Design document not made since we are still in the analysis phase. First results have shown that the fraction of vehicle types does not vary much through the year.
+This means that the third plot will have to change.
+Map crawler fully functional.
