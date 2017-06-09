@@ -7,10 +7,12 @@ import sys
 sys.setrecursionlimit(5000)
 
 
-def search(node, current, previous, array, count):
+def search(node, current, previous, array, count, path):
 
     if count > 5000:
         return
+
+    path.append(current)
 
     next_places = []
     surrounding = [
@@ -29,13 +31,19 @@ def search(node, current, previous, array, count):
         elif 28 <= array[place[0], place[1]] <= 33:
             found_name = [node.name for node in node_list if node.place == place][0]
             if found_name in node.reachable.keys():
-                if node.reachable[found_name] > count + 1:
-                    node.reachable[found_name] = count + 1
+                if node.reachable[found_name]['steps'] > count + 1:
+                    node.reachable[found_name] = {
+                        'steps': count + 1,
+                        'path': path
+                    }
             else:
-                node.reachable[found_name] = count + 1
+                node.reachable[found_name] = {
+                    'steps': count + 1,
+                    'path': path
+                }
 
     for place in next_places:
-        search(node, place, current, array, count + 1)
+        search(node, place, current, array, count + 1, path)
 
     return
 
@@ -101,6 +109,6 @@ for row in range(n):
             node_list.append(node(row, col, pixel))
 
 for node in node_list:
-    search(node, node.place, None, map_array, 0)
-    print(node.name)
-    print(node.reachable)
+    search(node, node.place, None, map_array, 0, [])
+
+print(node_list[0].reachable)
