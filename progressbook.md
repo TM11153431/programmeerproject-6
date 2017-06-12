@@ -28,3 +28,19 @@ Next to the graph appears a table with all visitors which have crossed that path
 When one of these visitors, their paths are shown on the map with arrows.
 
 A page with the graph has been added.
+
+# 12/06
+Speed calculation on roads now works. Corrections in the distance of paths for diagonals had to be imposed to obtain realistic looking results.
+
+A lot of time has been spent on figuring out how to structure the dataset(s). I wanted to be able to retain the possibility to select arbitrary time intervals. This would require that the javascript code calculates values like average speed etc. dynamically after that the date range has been set. This takes a lot of calculations which results in a (very) slow page.
+For this reason I have decided not to add dynamic date ranges. Instead, I will generate a file for every day of the year with pre-calculated averages etc.
+This will increase the loading time of the page (365 different datafiles) but the response times will likely be quite fast.
+
+See the design.md file for a up-to-date idea of how the final product should look and work and which data formats it requires.
+
+To-dos:
+- Restructure all files and folders (it is becoming a mess)
+- Write a function which assigns a id to a path. Whether it has been crossed from A to B or from B to A.
+- Generate data of the paths for every day of the year separately
+- Generate dataset with speeding data of every path throughout the year
+- Reformat the sensor_data_per_ID.json file so that it contains all data which has to be shown in the table

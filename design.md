@@ -1,30 +1,46 @@
-# Design File
-This project will have a drill-down story. It will attempt to guide the user through the traffic data of the nature preserve to let the user find answers on why the Rose-crested Pipit is breeding less. At this stage of the project it is not clear what kind of visualizations will be used to this end, but for now this document will describe the design and user interface of some proposed visualizations.
+# Design
+## Sven van Dam
+## 10529772
 
-## Summary of product design
-When the user first opens the website, he will see a map of the nature preserve, with all the gates and roads between the gates. The user has the option to start an animation that shows either a heatmap of sound or of speeding cars over time (this depends on further data analysis). The user will also have the option to see a graph of the preserve. This graph will try show the average busyness of the entire park at a glance. The user then gets the option to click on nodes (gates) or edges (roadways). Depending on the type of gate, a barchart or a calender view will show up. These will show the busyness over time. Further drill-down options will be decided upon after further data analysis.
+*The choice of visualisations can be changed when other forms seem to be more useful*
 
-## Sketches of visualizations
-- map
-![Map](https://github.com/SvenvDam/programmeerproject/blob/master/doc/map.JPG)
-- heatmap
-![Heatmap](https://github.com/SvenvDam/programmeerproject/blob/master/doc/heatmap.JPG)
-- calender view
-See website for beta version of visualization: https://pvtwuyver.github.io/vast2017/calendar.html
-- graph
-![Graph](https://github.com/LauraRuis/VAST2017/blob/master/Doc/Graph.jpeg)
-- barchart
-![Stacked Bar Chart](https://github.com/LauraRuis/VAST2017/blob/master/Doc/Stacked%20Bar%20Chart.jpeg)
+The result of this project will consist of four items. In addition to this, there will be a slider to switch between weeks.
 
-## List of data sources
-- Lekagul Sensor Data (.csv file)
-- Lekagul Roadways (BMP File)
-- Lekagul Preserve Description (word file)
-- Lekagul Roadways labeled (JPG File)
-- Data Descriptions for MC1 (word file)
-All data available at http://vacommunity.org/VAST+Challenge+2017+MC1.
+### General layout:
+![layout](/doc/layout.jpeg)
 
-## List of frameworks that provide functionality
-- D3
-- Bootstrap
-- ...
+### Slot 1 - graph
+The edges of the graph will display the rate of speeders using colours. A edge can be selected to show more in-depth info in other slots. The graph represents the values of one  week.
+
+The data needed for this graph:
+1. Rate of speeders for the color of the edges
+1. Average speed for hover info
+1. ID of edge
+1. List of visitors for table
+
+![map](/doc/graph.jpeg)
+
+### Slot 2 - Table
+The table will show a list of visitors of the selected path for a certain day. The table will show for each visitor:
+1. ID
+1. Vehicle type and code
+1. Entrance day
+1. Exit day
+
+The table will most likely be made with bootstrap tables
+
+![map](/doc/table.jpeg)
+
+### Slot 3 - Linegraph
+
+The line graph will show the rate of speeding for a selected path throughout the year. Each vehicle type gets its own line
+
+![map](/doc/linegraph.jpeg)
+
+### Slot 4 - Path on map
+When a visitor is selected in the table, the map shows the route this visitor has taken through the park. This is done by drawing arrows over the map. The appear one by one.
+
+![map](/doc/map_path.jpeg)
+
+
+
