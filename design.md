@@ -18,7 +18,7 @@ The data needed for this graph:
 1. ID of edge
 1. List of visitors for table
 
-![map](/doc/graph.png)
+![graph](/doc/graph.png)
 
 ### Slot 2 - Table
 The table will show a list of visitors of the selected path for a certain day. The table will show for each visitor:
@@ -29,13 +29,13 @@ The table will show a list of visitors of the selected path for a certain day. T
 
 The table will most likely be made with bootstrap tables
 
-![map](/doc/table.jpeg)
+![table](/doc/table.jpeg)
 
 ### Slot 3 - Linegraph
 
 The line graph will show the rate of speeding for a selected path throughout the year. Each vehicle type gets its own line
 
-![map](/doc/linegraph.jpeg)
+![line](/doc/linechart.jpeg)
 
 ### Slot 4 - Path on map
 When a visitor is selected in the table, the map shows the route this visitor has taken through the park. This is done by drawing arrows over the map. The appear one by one.
