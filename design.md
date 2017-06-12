@@ -18,7 +18,7 @@ The data needed for this graph:
 1. ID of edge
 1. List of visitors for table
 
-![map](/doc/graph.jpeg)
+![map](/doc/graph.png)
 
 ### Slot 2 - Table
 The table will show a list of visitors of the selected path for a certain day. The table will show for each visitor:
