@@ -44,3 +44,6 @@ To-dos:
 - Generate data of the paths for every day of the year separately
 - Generate dataset with speeding data of every path throughout the year
 - Reformat the sensor_data_per_ID.json file so that it contains all data which has to be shown in the table
+
+# 13/06
+Speeding data has been generated. Edges of the graph now are colored by speeding. The colors are made with a logarithmic scale on the product of the rate of speeders and the average mph above the speed limit of the speeders. While the dataset does contain values for all days of the year, updating is not working yet. Should be done tomorrow.
