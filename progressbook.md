@@ -47,3 +47,8 @@ To-dos:
 
 # 13/06
 Speeding data has been generated. Edges of the graph now are colored by speeding. The colors are made with a logarithmic scale on the product of the rate of speeders and the average mph above the speed limit of the speeders. While the dataset does contain values for all days of the year, updating is not working yet. Should be done tomorrow.
+
+# 14/06
+Second element has been added. A table which shows all visitors who have taken a selected path on a selected day. Those who have speeded there are highlighted in red.
+When a visitor is selected in the table, the path that has been taken is shown step by step on the graph. This makes the visualization on a real map redundant. Besides that, a good indicator for speeding is hard to find. The colors of the edges are determined by a index which I've come up with myself. This index is no good value for the y-axis of the linegraph, however.
+This means that I will most likely have to come up with two ideas for new visualizations.

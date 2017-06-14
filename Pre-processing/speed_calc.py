@@ -77,6 +77,7 @@ def calculate_speed(date):
         graphdata_new = json.load(f)
 
     new_links = []
+    made_links = []
 
     for source in links.keys():
         for target in links[source].keys():
@@ -87,15 +88,19 @@ def calculate_speed(date):
                 links[source][target]["speed"] = 0
                 links[source][target]["speeder_rate"] = 0
 
-            new_links.append({
-                "source": source,
-                "target": target,
-                "steps": links[source][target]["steps"],
-                "rate": links[source][target]["speeder_rate"],
-                "speed": links[source][target]["speed"],
-                "visitors": links[source][target]["visitors"],
-                "speeders": links[source][target]["speeders"]
-            })
+            if source + "--" + target not in made_links:
+                new_links.append({
+                    "source": source,
+                    "target": target,
+                    "steps": links[source][target]["steps"],
+                    "rate": links[source][target]["speeder_rate"],
+                    "speed": links[source][target]["speed"],
+                    "visitors": links[source][target]["visitors"],
+                    "speeders": links[source][target]["speeders"]
+                })
+
+                made_links.append(source + "--" + target)
+                made_links.append(target + "--" + source)
 
     graphdata_new["links"] = new_links
 
@@ -112,5 +117,5 @@ dates = [(start + datetime.timedelta(days=i)).strftime('%d/%m/%Y %H:%M') for i i
 for d in dates:
     calculate_speed(d)
 
-with open("../data/data-sven.json", "w") as f:
+with open("../data/speeding_graph_data.json", "w") as f:
     json.dump(speeding_year, f)
