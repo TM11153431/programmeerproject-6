@@ -259,15 +259,17 @@ window.onload = function() {
 
             function set_focus(id, id_prev, time, line_id, line_id2) {
                 setTimeout(function() {
-                    d3.select("#" + id_prev)
-                        .attr("r", 5);
-                    d3.select("#" + id)
-                        .style("opacity", 1)
-                        .attr("r", 10);
-                    d3.select("#" + line_id)
-                        .style("stroke-opacity", 1);
-                    d3.select("#" + line_id2)
-                        .style("stroke-opacity", 1);
+                    if (time !== 0) {
+                        d3.select("#" + id_prev)
+                            .attr("r", 5);
+                        d3.select("#" + id)
+                            .style("opacity", 1)
+                            .attr("r", 10);
+                        d3.select("#" + line_id)
+                            .style("stroke-opacity", 1);
+                        d3.select("#" + line_id2)
+                            .style("stroke-opacity", 1);
+                    }
                 }, time);
             }
 
