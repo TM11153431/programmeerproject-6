@@ -13,7 +13,7 @@ window.onload = function() {
         selected_id,
         selected_route;
 
-    d3.json("data/speeding_graph_data.json", function(error, data) {
+    d3.json("/data/speeding_graph_data.json", function(error, data) {
 
         if (error) throw error;
 
@@ -209,7 +209,7 @@ window.onload = function() {
     var routes_per_ID;
 
 
-    d3.json("data/id_data.json", function(error, data) {
+    d3.json("/data/id_data.json", function(error, data) {
 
         if (error) throw error;
 
