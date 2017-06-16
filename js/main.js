@@ -68,6 +68,7 @@ window.onload = function() {
                     }
                 }
                 $("table").trigger("renew");
+                $("#scatter").trigger("update");
             });
 
         function update() {
@@ -214,7 +215,7 @@ window.onload = function() {
         if (error) throw error;
 
         var table = $('table').DataTable({
-            "scrollY": window.innerHeight * 0.9,
+            "scrollY": window.innerHeight * 0.75,
             "scrollCollapse": true,
             "paging": false,
             "info": false,
@@ -224,6 +225,9 @@ window.onload = function() {
                 }
             }
         });
+
+        var time_text = d3.select("#graph")
+            .append("text");
 
         $("table").on("renew", function() {
             table.clear();
@@ -257,7 +261,7 @@ window.onload = function() {
             d3.select("#graph").selectAll("line")
                 .style("stroke-opacity", 0.2);
 
-            function set_focus(id, id_prev, time, line_id, line_id2) {
+            function set_focus(id, id_prev, time, line_id, line_id2, stamp) {
                 setTimeout(function() {
                     if (time !== 0) {
                         d3.select("#" + id_prev)
@@ -269,12 +273,15 @@ window.onload = function() {
                             .style("stroke-opacity", 1);
                         d3.select("#" + line_id2)
                             .style("stroke-opacity", 1);
+                            time_text
+                                .text(stamp);
                     }
                 }, time);
             }
 
             for (var i = 0, n = selected_route.length; i < n; i++) {
                 var id = selected_route[i].gate,
+                    stamp = selected_route[i].timestamp,
                     id_prev = "";
 
                     if (i > 0) {
@@ -282,20 +289,89 @@ window.onload = function() {
                     }
                     var line_id = id_prev + "-" + id,
                         line_id2 = id + "-" + id_prev;
-                set_focus(id, id_prev, i * 600, line_id, line_id2);
+                set_focus(id, id_prev, i * 600, line_id, line_id2, stamp);
             }
 
             setTimeout(function() {
-                d3.selectAll("circle")
+                d3.select("#graph").selectAll("circle")
                     .style("opacity", 1)
                     .attr("r", 5);
                 d3.select("#graph").selectAll("line")
                     .style("stroke-opacity", 1);
                 $.unblockUI();
+                time_text
+                    .text("");
             }, 600 * selected_route.length);
 
         });
     });
 
+    d3.json("data/scatter_data.json", function(error, data) {
 
+        if (error) throw error;
+
+        var ids,
+            vars = ["number_stops", "max_speed"],
+            coeff,
+            filtered;
+
+
+        $("#scatter").on("update", function() {
+            filtered = [];
+            var slider_val = d3.select("#slider").property("value"),
+            week = Math.floor((18 + slider_val / 7 - 1) % 53) + 1;
+            ids = data.weeks[week];
+
+            ids.forEach(function(id) {
+                temp = [];
+                vars.forEach(function(variable) {
+                    temp.push(data.ids[id][variable]);
+                });
+                filtered.push(temp);
+            });
+
+            coeff = regression('linear', filtered).equation;
+
+            var dots = scatter_g.selectAll("circle")
+                .data(filtered);
+
+            dots
+                .exit().remove();
+
+            dots
+                .enter().append("circle");
+
+            dots
+                .transition().duration(300)
+                .attr("r", 2)
+                .attr("cx", function(d) { return x(d[0]); })
+                .attr("cy", function(d) { return y(d[1]); })
+                .style("fill", "red");
+
+        });
+
+        var w = window.innerWidth * 0.5,
+            h = window.innerHeight * 0.5;
+
+        var x = d3.scaleLinear()
+                .domain([0, 30])
+                .range([0, w]),
+            y = d3.scaleLinear()
+                .domain([20, 100])
+                .range([h, 0]);
+
+
+        var scatter = d3.select("#scatter").append("svg")
+            .attr("width", "100%")
+            .attr("height", h);
+        scatter_g = scatter.append("g");
+
+        scatter_g.append("rect")
+            .attr("width", w)
+            .attr("height", h)
+            .style("fill", "lightgrey");
+
+        d3.select("#scatter").append("svg").attr("width", "100%");
+
+    });
 };

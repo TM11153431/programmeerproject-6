@@ -21,27 +21,36 @@ Vast Challenge 2017-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.2/css/select.bootstrap.min.css">
     <script src="https://malsup.github.io/jquery.blockUI.js"></script>
+    <script type="text/javascript" src="js/regression.js"></script>
 </head>
 <body>
-    <div class="col-md-12" id="slider_div"><input type="range" id="slider"></input></div>
-    <div class="col-md-6" id="graph"></div>
-    <div class="col-md-6" id="table">
-        <table class="table table-hover table-responsive">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Start</th>
-                    <th>End</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+
+    <div class="col-md-4"></div>
+    <div class="col-md-4" id="slider_div"><input type="range" id="slider"></input></div>
+    <div class="col-md-4"></div>
+
+    <div class="col-md-12">
+        <div class="col-md-6" id="graph"></div>
+        <div class="col-md-6" id="table">
+            <table class="table table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <div class="col-md-6" id="linegraph"></div>
-    <div class="col-md-6" id="map"></div>
+    <div class="col-md-12">
+        <div class="col-md-6" id="scatter"></div>
+        <div class="col-md-6" id="map"></div>
+    </div>
 
 </body>
 </html>

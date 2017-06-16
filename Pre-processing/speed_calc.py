@@ -10,6 +10,9 @@ with open("../Data/graph.json") as f:
 with open("../Data/route_per_ID.json") as f:
     routes = json.load(f)
 
+with open("../data/scatter_data.json", "r") as f:
+    scatter = json.load(f)
+
 
 def date2seconds(date):
     return time.mktime(
