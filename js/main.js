@@ -17,12 +17,12 @@ window.onload = function() {
 
         if (error) throw error;
 
-        var width = window.innerWidth * 0.75,
-            height = window.innerHeight;
+        var width = window.innerWidth * 0.5,
+            height = window.innerHeight * 0.5;
 
         var graph_svg = d3.select('#graph').append('svg')
             .attr('width', "100%")
-            .attr('height', height * 0.9);
+            .attr('height', height);
 
         var g = graph_svg.append("g")
             .attr("class", "everything");
@@ -69,6 +69,9 @@ window.onload = function() {
                 }
                 $("table").trigger("renew");
                 $("#scatter").trigger("update");
+            })
+            .on("change", function() {
+
             });
 
         function update() {
@@ -207,20 +210,19 @@ window.onload = function() {
                 }
     });
 
-    var routes_per_ID;
-
-
-    d3.json("data/id_data.json", function(error, data) {
+    d3.json("data/scatter_data.json", function(error, data) {
 
         if (error) throw error;
 
+        id_data = data.ids;
+
         var table = $('table').DataTable({
-            "scrollY": window.innerHeight * 0.75,
+            "scrollY": window.innerHeight * 0.5,
             "scrollCollapse": true,
             "paging": false,
             "info": false,
-            "createdRow": function(row, data, dataIndex) {
-                if ($.inArray(data[0], speeder_ids) !== -1) {
+            "createdRow": function(row, r_data, dataIndex) {
+                if ($.inArray(r_data[0], speeder_ids) !== -1) {
                     $(row).css('color', 'red');
                 }
             }
@@ -231,26 +233,27 @@ window.onload = function() {
 
         $("table").on("renew", function() {
             table.clear();
-            var data_by_id = [];
 
-            for (var i = 0, n = edge_ids.length; i < n; i++) {
-                var route = data[edge_ids[i]].route,
+            for (var i = 1, n = edge_ids.length; i < n; i++) {
+                var route = id_data[edge_ids[i]].route,
                     start = route[0].timestamp,
                     end = route[route.length - 1].timestamp;
 
-                data_by_id.push([
-                    edge_ids[i],
-                    data[edge_ids[i]]["car-type"],
-                    start,
-                    end
-                ]);
-            }
-            table.rows.add(data_by_id).draw();
-        });
+                    table.row.add([
+                        edge_ids[i],
+                        id_data[edge_ids[i]].car_type,
+                        start,
+                        end,
+                        id_data[edge_ids[i]].number_stops,
+                        id_data[edge_ids[i]].max_speed.toFixed(2)
+                    ]);
+                }
+                table.draw();
+            });
 
         $("table tbody").on("click", "tr", function(event) {
             selected_id = $(this).closest("tr").find("td")[0].innerHTML;
-            selected_route = data[selected_id].route;
+            selected_route = id_data[selected_id].route;
             $.blockUI({
                 message: null,
                 overlayCSS: {opacity: 0}
@@ -304,74 +307,90 @@ window.onload = function() {
             }, 600 * selected_route.length);
 
         });
-    });
-
-    d3.json("data/scatter_data.json", function(error, data) {
-
-        if (error) throw error;
 
         var ids,
             vars = ["number_stops", "max_speed"],
-            coeff,
-            filtered;
+            coeff, coeff2,
+            filtered,
+            week_current;
 
 
         $("#scatter").on("update", function() {
-            filtered = [];
+
+            filtered = [], full_data = [];
+
             var slider_val = d3.select("#slider").property("value"),
             week = Math.floor((18 + slider_val / 7 - 1) % 53) + 1;
-            ids = data.weeks[week];
+            if (week != week_current){
 
-            ids.forEach(function(id) {
-                temp = [];
-                vars.forEach(function(variable) {
-                    temp.push(data.ids[id][variable]);
+                ids = data.weeks[week];
+
+                ids.forEach(function(id) {
+                    temp = [];
+                    vars.forEach(function(variable) {
+                        temp.push(data.ids[id][variable]);
+                    });
+                    filtered.push(temp);
                 });
-                filtered.push(temp);
-            });
 
-            coeff = regression('linear', filtered).equation;
+                coeff = regression('linear', filtered).equation;
 
-            var dots = scatter_g.selectAll("circle")
-                .data(filtered);
+                var dots = scatter_g.selectAll("circle")
+                    .data(filtered);
 
-            dots
-                .exit().remove();
+                dots
+                    .exit().remove();
 
-            dots
-                .enter().append("circle");
+                dots
+                    .enter().append("circle");
 
-            dots
-                .transition().duration(300)
-                .attr("r", 2)
-                .attr("cx", function(d) { return x(d[0]); })
-                .attr("cy", function(d) { return y(d[1]); })
-                .style("fill", "red");
+                dots
+                    .transition().duration(300)
+                    .attr("r", 2)
+                    .attr("cx", function(d) { return x(d[0]); })
+                    .attr("cy", function(d) { return y(d[1]); })
+                    .style("fill", "grey");
 
+                trendline
+                    .transition().duration(300)
+                    .attr("x1", x(0))
+                    .attr("y1", y(coeff[1]))
+                    .attr("x2", w)
+                    .attr("y2", y(coeff[1] + 30 * coeff[0]));
+
+                week_current = week;
+            }
         });
 
         var w = window.innerWidth * 0.5,
             h = window.innerHeight * 0.5;
 
         var x = d3.scaleLinear()
-                .domain([0, 30])
-                .range([0, w]),
+                .range([25, w - 5])
+                .domain([0, 50]),
             y = d3.scaleLinear()
-                .domain([20, 100])
-                .range([h, 0]);
-
+                .range([h - 5, 5])
+                .domain([0, 150]);
 
         var scatter = d3.select("#scatter").append("svg")
             .attr("width", "100%")
-            .attr("height", h);
-        scatter_g = scatter.append("g");
+            .attr("height", h + 50);
 
-        scatter_g.append("rect")
-            .attr("width", w)
-            .attr("height", h)
-            .style("fill", "lightgrey");
+        var scatter_g = scatter.append("g");
 
-        d3.select("#scatter").append("svg").attr("width", "100%");
+        var trendline = scatter_g.append("line")
+            .attr("stroke", "navy");
+
+        var xaxis = scatter_g.append("g")
+            .attr("transform", "translate(0," + h  + ")")
+            .call(d3.axisBottom(x));
+        var yaxis = scatter_g.append("g")
+            .attr("transform", "translate(25,0)")
+            .call(d3.axisLeft(y));
 
     });
+
+
+    $("table").trigger("renew");
+    $("#scatter").trigger("update");
 };

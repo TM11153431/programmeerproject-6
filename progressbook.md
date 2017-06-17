@@ -52,3 +52,10 @@ Speeding data has been generated. Edges of the graph now are colored by speeding
 Second element has been added. A table which shows all visitors who have taken a selected path on a selected day. Those who have speeded there are highlighted in red.
 When a visitor is selected in the table, the path that has been taken is shown step by step on the graph. This makes the visualization on a real map redundant. Besides that, a good indicator for speeding is hard to find. The colors of the edges are determined by a index which I've come up with myself. This index is no good value for the y-axis of the linegraph, however.
 This means that I will most likely have to come up with two ideas for new visualizations.
+
+# 15/06
+The new visualizations will be a linegaph depicting the busyness on a path throughout the year and a scatterplot with max recorded speed on the y-axis and number of stops on the x-axis. Some form of trendline will be plotted as well. If I can come up with enough relevant continuous variables, there will be a option to swap depicted variables. I am experimenting with different forms of trendlines. Most likely it will be a simple linear singular regression line. Polynomial and non-linear estimates do not seem to differ much from a straight line and are significantly heavier to estimate realtime.
+
+# 16/06
+Datasets are restructured so that the table and scatterplot are working from the same file. Scatterplot is functional with a linear trendline. Data is included from an entire week to obtain enough datapoints for somewhat reliable trendlines.
+Data for the linegraph stille has to be generated. After the linegraph is functional, focus will first lie on including tooltips etc. to feed more info to the user. After that, aesthetics of the page will have to be upgraded.

@@ -20,6 +20,8 @@ def date2seconds(date):
 
 def calculate_speed():
 
+    super_speed = 0
+
     with open("walked_paths.json", "r") as f:
         links = json.load(f)
 
@@ -42,6 +44,8 @@ def calculate_speed():
                     speed = (steps * 0.06) / (diff / 3600)
                     if speed > scatter["ids"][ID]["max_speed"]:
                         scatter["ids"][ID]["max_speed"] = speed
+                    if speed > super_speed:
+                        super_speed = speed
                 except:
                     print("error")
                     print(prev_place)
@@ -50,6 +54,8 @@ def calculate_speed():
 
             prev_time = seconds
             prev_place = location
+
+    print(super_speed)
 
 
 calculate_speed()
