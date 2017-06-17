@@ -13,6 +13,13 @@ window.onload = function() {
         selected_id,
         selected_route;
 
+    function edge_id_gen(start, end) {
+        temp = [start, end];
+        temp.sort();
+
+        return temp[0] + "-" + temp[1];
+    }
+
     d3.json("data/speeding_graph_data.json", function(error, data) {
 
         if (error) throw error;
@@ -61,7 +68,7 @@ window.onload = function() {
             .on("input", function() {
                 update();
                 for (var i = 0, n = graph.links.length; i < n; i++) {
-                    if (graph.links[i].index == selected_edge) {
+                    if (edge_id_gen(graph.links[i].source.id, graph.links[i].target.id) == selected_edge) {
                         edge_ids = graph.links[i].visitors;
                         speeder_ids = graph.links[i].speeders;
                         break;
@@ -69,9 +76,6 @@ window.onload = function() {
                 }
                 $("table").trigger("renew");
                 $("#scatter").trigger("update");
-            })
-            .on("change", function() {
-
             });
 
         function update() {
@@ -130,7 +134,7 @@ window.onload = function() {
                     return graphy(d.target.ypos);
                 })
                 .attr("id", function(d) {
-                    return d.source.id + "-" + d.target.id;
+                    return edge_id_gen(d.source.id, d.target.id);
                 })
                 .style("stroke", function(d) {
                     return edgecolor(d.visitors.length * d.rate * d.speed);
@@ -154,7 +158,7 @@ window.onload = function() {
                     link.style("stroke-opacity", 1);
                 })
                 .on("click", function(d) {
-                    selected_edge = d.index;
+                    selected_edge = edge_id_gen(d.source.id, d.target.id);
                     edge_ids = d.visitors;
                     speeder_ids = d.speeders;
 
@@ -162,6 +166,7 @@ window.onload = function() {
                     d3.select(this).style("stroke-width", 5);
 
                     $("table").trigger("renew");
+                    $("#linegraph").trigger("update");
                 });
 
             node
@@ -264,7 +269,7 @@ window.onload = function() {
             d3.select("#graph").selectAll("line")
                 .style("stroke-opacity", 0.2);
 
-            function set_focus(id, id_prev, time, line_id, line_id2, stamp) {
+            function set_focus(id, id_prev, time, line_id, stamp) {
                 setTimeout(function() {
                     if (time !== 0) {
                         d3.select("#" + id_prev)
@@ -274,10 +279,8 @@ window.onload = function() {
                             .attr("r", 10);
                         d3.select("#" + line_id)
                             .style("stroke-opacity", 1);
-                        d3.select("#" + line_id2)
-                            .style("stroke-opacity", 1);
-                            time_text
-                                .text(stamp);
+                        time_text
+                            .text(stamp);
                     }
                 }, time);
             }
@@ -290,9 +293,9 @@ window.onload = function() {
                     if (i > 0) {
                         id_prev = selected_route[i - 1].gate;
                     }
-                    var line_id = id_prev + "-" + id,
-                        line_id2 = id + "-" + id_prev;
-                set_focus(id, id_prev, i * 600, line_id, line_id2, stamp);
+                    var line_id = edge_id_gen(id_prev, id);
+
+                set_focus(id, id_prev, i * 600, line_id, stamp);
             }
 
             setTimeout(function() {
@@ -388,6 +391,53 @@ window.onload = function() {
             .attr("transform", "translate(25,0)")
             .call(d3.axisLeft(y));
 
+    });
+
+    d3.json("../data/path_busyness.json", function(error, data) {
+
+        if (error) throw error;
+
+        var w = window.innerWidth * 0.5,
+            h = window.innerHeight * 0.5;
+
+        var linegraph = d3.select("#linegraph")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .append("g");
+
+        var path = linegraph.append("path")
+            .attr("stroke", "navy")
+            .style("fill", "none");
+
+        var x = d3.scaleLinear()
+                .domain([0, 397])
+                .range([5, w - 5]),
+            y = d3.scaleLinear()
+                .range([h - 5, 5]);
+
+
+        var line = d3.line()
+            .x(function(d) { return x(d.x); })
+            .y(function(d) { return y(d.y); });
+
+        $("#linegraph").on("update", function() {
+            var vals = [];
+
+            var pathdata = data[selected_edge];
+
+            pathdata.forEach(function(d) {
+                vals.push(d.y);
+            });
+
+            y.domain([Math.min(...vals), Math.max(...vals)]);
+            console.log(pathdata);
+            console.log(selected_edge);
+
+            path
+                .transition().duration(300)
+                .attr("d", line(pathdata));
+        });
     });
 
 
