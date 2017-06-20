@@ -59,3 +59,8 @@ The new visualizations will be a linegaph depicting the busyness on a path throu
 # 16/06
 Datasets are restructured so that the table and scatterplot are working from the same file. Scatterplot is functional with a linear trendline. Data is included from an entire week to obtain enough datapoints for somewhat reliable trendlines.
 Data for the linegraph stille has to be generated. After the linegraph is functional, focus will first lie on including tooltips etc. to feed more info to the user. After that, aesthetics of the page will have to be upgraded.
+
+# 19/06
+Linegraph with wit a decomposition is functional. Car types can be selected to (not) be included in the graph. The scatterplot does not fit in well with the rest of the visualizations and will be removed. A histogram of the speeds on a selected path will replace the scatterplot.
+I am working on a zoom function for the linegraph. Simply using the methodology I've found online does not seem to work (yet) so I'll have to dig somewhat deeper. Should be done in 1-2 days.
+The beta version of the final product will likely have all functionalities but will lack aesthetics.
