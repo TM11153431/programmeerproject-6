@@ -7,7 +7,7 @@ d3.json("../data/path_busyness.json", function(error, data) {
 
     var linecolors = d3.scaleOrdinal()
         .domain(car_types)
-        .range(["red", "orange", "blue", "green", "orange", "yellow", "brown"]);
+        .range(['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d']);
 
     var w = window.innerWidth * 0.5,
         h = window.innerHeight * 0.5;
@@ -24,20 +24,18 @@ d3.json("../data/path_busyness.json", function(error, data) {
             .range([5, w - 5]),
         y = d3.scaleLinear()
             .range([h - 5, 5]);
-//////
-    var zoom = d3.zoom()
+
+    var zoomer = d3.zoom()
         .scaleExtent([1, 40])
         .translateExtent([[-100, -100], [w + 90, h + 100]])
         .on("zoom", zoomed);
 
     var xAxis = d3.axisBottom(x)
         .ticks((w + 2) / (h + 2) * 10)
-        .tickSize(h)
         .tickPadding(8 - h);
 
     var yAxis = d3.axisRight(y)
         .ticks(10)
-        .tickSize(w)
         .tickPadding(8 - w);
 
     var gX = svg.append("g")
@@ -48,17 +46,22 @@ d3.json("../data/path_busyness.json", function(error, data) {
         .attr("class", "axis axis--y")
         .call(yAxis);
 
-    svg.call(zoom);
+    svg.call(zoomer);
 
     function zoomed() {
-      view.attr("transform", d3.event.transform);
-      gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
-      gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
+        linegraph.attr("transform", "translate( " + d3.event.transform.x + ", 0)" +
+            "scale("+ d3.event.transform.k+", 1)");
+        // d3.selectAll(".typeline")
+        //     .attr("transform", "scale("+ d3.event.transform.k+","+ d3.event.transform.k+" )");
+        d3.selectAll('.typeline').style("stroke-width", 1/d3.event.transform.k);
+        gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
+
     }
 /////
     car_types.forEach(function(type) {
         linegraph.append("path")
             .attr("id", "type-" + type)
+            .attr("class", "typeline")
             .style("fill", "none");
     });
 
