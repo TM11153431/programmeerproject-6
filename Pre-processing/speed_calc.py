@@ -7,7 +7,7 @@ speeding_year = {}
 with open("../Data/graph.json") as f:
     graphdata = json.load(f)
 
-with open("../Data/route_per_ID.json") as f:
+with open("../old/route_per_ID.json") as f:
     routes = json.load(f)
 
 with open("../data/scatter_data.json", "r") as f:

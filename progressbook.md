@@ -64,3 +64,7 @@ Data for the linegraph stille has to be generated. After the linegraph is functi
 Linegraph with wit a decomposition is functional. Car types can be selected to (not) be included in the graph. The scatterplot does not fit in well with the rest of the visualizations and will be removed. A histogram of the speeds on a selected path will replace the scatterplot.
 I am working on a zoom function for the linegraph. Simply using the methodology I've found online does not seem to work (yet) so I'll have to dig somewhat deeper. Should be done in 1-2 days.
 The beta version of the final product will likely have all functionalities but will lack aesthetics.
+
+# 21/06
+Added zooming on the linegraph. Having some issues with properly alignment the axes and ticks.
+Histogram works in a simplified form. There seems to be a sort of a gap in the measured speeds. They are either very high or relatively normal. 

@@ -15,7 +15,8 @@ d3.json("../data/path_busyness.json", function(error, data) {
     var svg = d3.select("#linegraph")
         .append("svg")
         .attr("width", w)
-        .attr("height", h);
+        .attr("height", h)
+        .attr("transform", "translate(10, 10)");
     var linegraph = svg
         .append("g");
 
@@ -34,12 +35,13 @@ d3.json("../data/path_busyness.json", function(error, data) {
         .ticks((w + 2) / (h + 2) * 10)
         .tickPadding(8 - h);
 
-    var yAxis = d3.axisRight(y)
+    var yAxis = d3.axisLeft(y)
         .ticks(10)
         .tickPadding(8 - w);
 
     var gX = svg.append("g")
         .attr("class", "axis axis--x")
+        .attr("transform", "translate(0, " + h + ")")
         .call(xAxis);
 
     var gY = svg.append("g")
@@ -51,13 +53,11 @@ d3.json("../data/path_busyness.json", function(error, data) {
     function zoomed() {
         linegraph.attr("transform", "translate( " + d3.event.transform.x + ", 0)" +
             "scale("+ d3.event.transform.k+", 1)");
-        // d3.selectAll(".typeline")
-        //     .attr("transform", "scale("+ d3.event.transform.k+","+ d3.event.transform.k+" )");
         d3.selectAll('.typeline').style("stroke-width", 1/d3.event.transform.k);
         gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
 
     }
-/////
+
     car_types.forEach(function(type) {
         linegraph.append("path")
             .attr("id", "type-" + type)
@@ -67,6 +67,7 @@ d3.json("../data/path_busyness.json", function(error, data) {
 
     var ruler = linegraph.append("line")
         .attr("id", "ruler")
+        .attr("class", "typeline")
         .attr("y1", y(0))
         .attr("y2", y(h))
         .attr("stroke", "#333333");
@@ -102,6 +103,9 @@ d3.json("../data/path_busyness.json", function(error, data) {
                     return line(pathdata);
                 });
         });
+        gY
+            .transition().duration(150)
+            .call(yAxis);
     });
 
     $("#ruler").on("update", function() {
@@ -109,7 +113,6 @@ d3.json("../data/path_busyness.json", function(error, data) {
             x_pos = x(x_val);
 
         ruler
-            .transition().duration(150)
             .attr("x1", x_pos)
             .attr("x2", x_pos);
     });

@@ -1,8 +1,6 @@
-d3.json("data/scatter_data.json", function(error, data) {
+d3.json("data/table_data.json", function(error, id_data) {
 
     if (error) throw error;
-
-    id_data = data.ids;
 
     var table = $('table').DataTable({
         "scrollY": window.innerHeight * 0.5,

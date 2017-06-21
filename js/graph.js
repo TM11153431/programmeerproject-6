@@ -77,6 +77,7 @@
                 $("table").trigger("renew");
                 $("#scatter").trigger("update");
                 $("#ruler").trigger("update");
+                $("#histogram").trigger("update");
             });
 
         function update() {
@@ -168,6 +169,7 @@
 
                     $("table").trigger("renew");
                     $("#linegraph").trigger("update");
+                    $("#histogram").trigger("update");
                 });
 
             node
@@ -220,7 +222,7 @@
 window.onload = function() {
 
     $("table").trigger("renew");
-    $("#scatter").trigger("update");
+    $("#histogram").trigger("update");
     $("#linegraph").trigger("update");
     $("#slider").trigger("input");
 };
