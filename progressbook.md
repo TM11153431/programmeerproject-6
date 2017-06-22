@@ -67,4 +67,7 @@ The beta version of the final product will likely have all functionalities but w
 
 # 21/06
 Added zooming on the linegraph. Having some issues with properly alignment the axes and ticks.
-Histogram works in a simplified form. There seems to be a sort of a gap in the measured speeds. They are either very high or relatively normal. 
+Histogram works in a simplified form. There seems to be a sort of a gap in the measured speeds. They are either very high or relatively normal.
+
+# 22/06
+Fixed axes. Histogram placed well and updates correctly. All items are there and functional. Last week will be spent on answering the questions of the challenge and styling the page. 
