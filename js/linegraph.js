@@ -1,3 +1,12 @@
+var dates;
+
+d3.json("../data/dates.json", function(error, data) {
+    if (error) throw error;
+
+    dates = data.array;
+});
+
+
 d3.json("../data/path_busyness.json", function(error, data) {
 
     if (error) throw error;
@@ -15,8 +24,7 @@ d3.json("../data/path_busyness.json", function(error, data) {
     var svg = d3.select("#linegraph")
         .append("svg")
         .attr("width", w)
-        .attr("height", h)
-        .attr("transform", "translate(10, 10)");
+        .attr("height", h);
     var linegraph = svg
         .append("g");
 
@@ -32,20 +40,25 @@ d3.json("../data/path_busyness.json", function(error, data) {
         .on("zoom", zoomed);
 
     var xAxis = d3.axisBottom(x)
-        .ticks((w + 2) / (h + 2) * 10)
-        .tickPadding(8 - h);
+        .ticks(10)
+        .tickPadding(8)
+        .tickFormat(function(i, d) {
+            return dates[i];
+        });
 
     var yAxis = d3.axisLeft(y)
-        .ticks(10)
-        .tickPadding(8 - w);
+        .ticks(5)
+        .tickPadding(8)
+        .tickFormat(d3.format(".0f"));
 
     var gX = svg.append("g")
         .attr("class", "axis axis--x")
-        .attr("transform", "translate(0, " + h + ")")
+        .attr("transform", "translate(25, " + (h - 25 ) + ")")
         .call(xAxis);
 
     var gY = svg.append("g")
         .attr("class", "axis axis--y")
+        .attr("transform", "translate(25, -25)")
         .call(yAxis);
 
     svg.call(zoomer);
@@ -55,13 +68,13 @@ d3.json("../data/path_busyness.json", function(error, data) {
             "scale("+ d3.event.transform.k+", 1)");
         d3.selectAll('.typeline').style("stroke-width", 1/d3.event.transform.k);
         gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
-
     }
 
     car_types.forEach(function(type) {
         linegraph.append("path")
             .attr("id", "type-" + type)
             .attr("class", "typeline")
+            .attr("transform", "translate(25, -25)")
             .style("fill", "none");
     });
 
@@ -70,7 +83,8 @@ d3.json("../data/path_busyness.json", function(error, data) {
         .attr("class", "typeline")
         .attr("y1", y(0))
         .attr("y2", y(h))
-        .attr("stroke", "#333333");
+        .attr("stroke", "#333333")
+        .attr("transform", "translate(25, -25)");
 
 
     var line = d3.line()
@@ -103,9 +117,11 @@ d3.json("../data/path_busyness.json", function(error, data) {
                     return line(pathdata);
                 });
         });
+
         gY
             .transition().duration(150)
             .call(yAxis);
+
     });
 
     $("#ruler").on("update", function() {

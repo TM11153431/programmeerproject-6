@@ -95,10 +95,10 @@ d3.json("data/table_data.json", function(error, id_data) {
     var w = window.innerWidth * 0.5,
         h = window.innerHeight * 0.5;
 
-    var histogram = d3.select("#histogram")
-        .append("svg")
-            .attr("width", "100%")
-            .attr("height", h);
+    // var histogram = d3.select("#histogram")
+    //     .append("svg")
+    //         .attr("width", "100%")
+    //         .attr("height", h);
 
     // var ids,
     //     vars = ["number_stops", "max_speed"],
