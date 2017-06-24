@@ -67,6 +67,7 @@ d3.json("../data/path_busyness.json", function(error, data) {
         linegraph.attr("transform", "translate( " + d3.event.transform.x + ", 0)" +
             "scale("+ d3.event.transform.k+", 1)");
         d3.selectAll('.typeline').style("stroke-width", 1/d3.event.transform.k);
+        d3.select('.ruler').style("stroke-width", 2/d3.event.transform.k);
         gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
     }
 
@@ -80,10 +81,11 @@ d3.json("../data/path_busyness.json", function(error, data) {
 
     var ruler = linegraph.append("line")
         .attr("id", "ruler")
-        .attr("class", "typeline")
+        .attr("class", "ruler")
         .attr("y1", y(0))
         .attr("y2", y(h))
         .attr("stroke", "#333333")
+        .attr("stroke-width", "2")
         .attr("transform", "translate(25, -25)");
 
 
