@@ -1,11 +1,20 @@
+/**
+ * Name: Sven van Dam
+ * Student number: 10529772
+ * Programmeerproject
+ * VAST Challenge 2017
+ */
+
+
 d3.json("data/table_data.json", function(error, id_data) {
 
     if (error) throw error;
 
     var table = $('table').DataTable({
-        "scrollY": window.innerHeight * 0.5,
+        "scrollY": window.innerHeight * 0.4,
         "scrollCollapse": true,
         "paging": false,
+        "searching": false,
         "info": false,
         "createdRow": function(row, r_data, dataIndex) {
             if ($.inArray(r_data[0], speeder_ids) !== -1) {
@@ -14,8 +23,7 @@ d3.json("data/table_data.json", function(error, id_data) {
         }
     });
 
-    var time_text = d3.select("#graph")
-        .append("text");
+    var time_text = d3.select("#datetext");
 
     $("table").on("renew", function() {
         table.clear();
@@ -38,6 +46,8 @@ d3.json("data/table_data.json", function(error, id_data) {
         });
 
     $("table tbody").on("click", "tr", function(event) {
+        var old_text = time_text.text();
+
         selected_id = $(this).closest("tr").find("td")[0].innerHTML;
         selected_route = id_data[selected_id].route;
         $.blockUI({
@@ -87,95 +97,8 @@ d3.json("data/table_data.json", function(error, id_data) {
                 .style("stroke-opacity", 1);
             $.unblockUI();
             time_text
-                .text("");
+                .text(old_text);
         }, 600 * selected_route.length);
 
     });
-
-    var w = window.innerWidth * 0.5,
-        h = window.innerHeight * 0.5;
-
-    // var histogram = d3.select("#histogram")
-    //     .append("svg")
-    //         .attr("width", "100%")
-    //         .attr("height", h);
-
-    // var ids,
-    //     vars = ["number_stops", "max_speed"],
-    //     coeff, coeff2,
-    //     filtered,
-    //     week_current;
-    //
-    // var w = window.innerWidth * 0.5,
-    //     h = window.innerHeight * 0.5;
-    //
-    // var x = d3.scaleLinear()
-    //         .range([25, w - 5])
-    //         .domain([0, 50]),
-    //     y = d3.scaleLinear()
-    //         .range([h - 5, 5])
-    //         .domain([0, 150]);
-    //
-    // var scatter = d3.select("#scatter").append("svg")
-    //     .attr("width", "100%")
-    //     .attr("height", h + 50);
-    //
-    // var scatter_g = scatter.append("g");
-    //
-    // var trendline = scatter_g.append("line")
-    //     .attr("stroke", "navy");
-    //
-    // var xaxis = scatter_g.append("g")
-    //     .attr("transform", "translate(0," + h  + ")")
-    //     .call(d3.axisBottom(x));
-    // var yaxis = scatter_g.append("g")
-    //     .attr("transform", "translate(25,0)")
-    //     .call(d3.axisLeft(y));
-    //
-    // $("#scatter").on("update", function() {
-    //
-    //     filtered = [];
-    //
-    //     var slider_val = d3.select("#slider").property("value"),
-    //     week = Math.floor((18 + slider_val / 7 - 1) % 53) + 1;
-    //     if (week != week_current){
-    //
-    //         ids = data.weeks[week];
-    //
-    //         ids.forEach(function(id) {
-    //             temp = [];
-    //             vars.forEach(function(variable) {
-    //                 temp.push(data.ids[id][variable]);
-    //             });
-    //             filtered.push(temp);
-    //         });
-    //
-    //         coeff = regression('linear', filtered).equation;
-    //
-    //         var dots = scatter_g.selectAll("circle")
-    //             .data(filtered);
-    //
-    //         dots
-    //             .exit().remove();
-    //
-    //         dots
-    //             .enter().append("circle");
-    //
-    //         dots
-    //             .transition().duration(300)
-    //             .attr("r", 2)
-    //             .attr("cx", function(d) { return x(d[0]); })
-    //             .attr("cy", function(d) { return y(d[1]); })
-    //             .style("fill", "grey");
-    //
-    //         trendline
-    //             .transition().duration(300)
-    //             .attr("x1", x(0))
-    //             .attr("y1", y(coeff[1]))
-    //             .attr("x2", w)
-    //             .attr("y2", y(coeff[1] + 30 * coeff[0]));
-    //
-    //         week_current = week;
-    //     }
-    // });
 });

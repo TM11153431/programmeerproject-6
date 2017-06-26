@@ -9,7 +9,7 @@
 
     var edge_ids = [],
         speeder_ids = [],
-        selected_edge = 'entrance1-general-gate7',
+        selected_edge,
         selected_id,
         selected_route;
 
@@ -24,8 +24,8 @@
 
         if (error) throw error;
 
-        var width = window.innerWidth * 0.5,
-            height = window.innerHeight * 0.5;
+        var width = window.innerWidth * 0.45,
+            height = window.innerHeight * 0.45;
 
         var graph_svg = d3.select('#graph').append('svg')
             .attr('width', "100%")
@@ -52,12 +52,6 @@
             .force("charge", d3.forceManyBody())
             .force("center", d3.forceCenter(width / 2, height / 2));
 
-        // add zoom capabilities
-        var zoom_handler = d3.zoom()
-            .on("zoom", zoom_actions);
-
-        zoom_handler(graph_svg);
-
         var keys = Object.keys(data),
             graph = data[keys[0]];
 
@@ -67,13 +61,13 @@
             .attr("value", 0)
             .on("input", function() {
                 update();
-                for (var i = 0, n = graph.links.length; i < n; i++) {
-                    if (edge_id_gen(graph.links[i].source.id, graph.links[i].target.id) == selected_edge) {
-                        edge_ids = graph.links[i].visitors;
-                        speeder_ids = graph.links[i].speeders;
-                        break;
+                graph.links.forEach(function(link) {
+                    if (edge_id_gen(link.source.id, link.target.id) == selected_edge) {
+                        edge_ids = link.visitors;
+                        speeder_ids = link.speeders;
                     }
-                }
+                });
+
                 $("table").trigger("renew");
                 $("#scatter").trigger("update");
                 $("#ruler").trigger("update");
@@ -83,6 +77,9 @@
         function update() {
             index = d3.select("#slider").property("value");
             graph = data[keys[index]];
+
+            d3.select("#datetext")
+                .text(dates[index]);
 
             d3.select(".links").selectAll("line")
                 .data(graph.links);
@@ -120,6 +117,10 @@
 
         simulation.force("link")
             .links(graph.links);
+
+        var tip = g.append("text")
+            .attr("class", "tooltip")
+            .style("text-anchor", "middle");
 
         function ticked() {
             link
@@ -170,6 +171,7 @@
                     $("table").trigger("renew");
                     $("#linegraph").trigger("update");
                     $("#histogram").trigger("update");
+                    $("#ruler").trigger("update");
                 });
 
             node
@@ -189,9 +191,17 @@
                             return 1;
                         }
                     });
+
+                    tip
+                        .attr("x", graphx(d.xpos))
+                        .attr("y", graphy(d.ypos - 5))
+                        .style("opacity", 1)
+                        .text(d.id);
+                    d3.select(this).append("text").text(d.id);
                 })
                 .on('mouseout', function() {
                     link.style("stroke-opacity", 1);
+                    tip.style("opacity", 0);
                 });
             }
 
@@ -212,17 +222,4 @@
                     d.fy = null;
                 }
 
-            //Zoom functions
-            function zoom_actions(){
-                    g.attr("transform", d3.event.transform);
-                }
     });
-
-
-window.onload = function() {
-
-    $("table").trigger("renew");
-    $("#histogram").trigger("update");
-    $("#linegraph").trigger("update");
-    $("#slider").trigger("input");
-};

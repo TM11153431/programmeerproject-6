@@ -1,9 +1,18 @@
+/**
+ * Name: Sven van Dam
+ * Student number: 10529772
+ * Programmeerproject
+ * VAST Challenge 2017
+ */
+
+
 var dates;
 
 d3.json("../data/dates.json", function(error, data) {
     if (error) throw error;
 
     dates = data.array;
+    d3.select("#datetext").text(dates[0]);
 });
 
 
@@ -18,8 +27,8 @@ d3.json("../data/path_busyness.json", function(error, data) {
         .domain(car_types)
         .range(['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d']);
 
-    var w = window.innerWidth * 0.5,
-        h = window.innerHeight * 0.5;
+    var w = window.innerWidth * 0.45,
+        h = window.innerHeight * 0.45;
 
     var svg = d3.select("#linegraph")
         .append("svg")
@@ -30,14 +39,10 @@ d3.json("../data/path_busyness.json", function(error, data) {
 
     var x = d3.scaleLinear()
             .domain([0, 397])
-            .range([5, w - 5]),
+            .range([5, w - 5])
+            .nice(),
         y = d3.scaleLinear()
-            .range([h - 5, 5]);
-
-    var zoomer = d3.zoom()
-        .scaleExtent([1, 40])
-        .translateExtent([[-100, -100], [w + 90, h + 100]])
-        .on("zoom", zoomed);
+            .range([h - 5, 30]);
 
     var xAxis = d3.axisBottom(x)
         .ticks(10)
@@ -61,16 +66,6 @@ d3.json("../data/path_busyness.json", function(error, data) {
         .attr("transform", "translate(25, -25)")
         .call(yAxis);
 
-    svg.call(zoomer);
-
-    function zoomed() {
-        linegraph.attr("transform", "translate( " + d3.event.transform.x + ", 0)" +
-            "scale("+ d3.event.transform.k+", 1)");
-        d3.selectAll('.typeline').style("stroke-width", 1/d3.event.transform.k);
-        d3.select('.ruler').style("stroke-width", 2/d3.event.transform.k);
-        gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
-    }
-
     car_types.forEach(function(type) {
         linegraph.append("path")
             .attr("id", "type-" + type)
@@ -78,6 +73,10 @@ d3.json("../data/path_busyness.json", function(error, data) {
             .attr("transform", "translate(25, -25)")
             .style("fill", "none");
     });
+
+    d3.selectAll("li")
+        .data(car_types)
+        .style("background" , function(d) { return linecolors(d); });
 
     var ruler = linegraph.append("line")
         .attr("id", "ruler")
@@ -94,45 +93,56 @@ d3.json("../data/path_busyness.json", function(error, data) {
 
 
     $("#linegraph").on("update", function() {
-        var vals = [];
+        if (selected_edge) {
+            var vals = [];
 
-        var pathdata = data[selected_edge];
+            var pathdata = data[selected_edge];
 
-        pathdata.forEach(function(d) {
-            car_types.forEach(function(type) {
-                if (d3.select("#check-" + type).property("checked") === true) {
-                    vals.push(d[type]);
-                }
-            });
-        });
-
-        y.domain([Math.min(...vals), Math.max(...vals)]);
-
-        car_types.forEach(function(variable) {
-            line
-                .y(function(d) { return y(d[variable]); });
-
-            d3.select("#type-" + variable)
-                .transition().duration(300)
-                .attr("stroke", linecolors(variable))
-                .attr("d", function(d){
-                    return line(pathdata);
+            pathdata.forEach(function(d) {
+                car_types.forEach(function(type) {
+                    if (d3.select("#check-" + type).property("checked") === true) {
+                        vals.push(d[type]);
+                    }
                 });
-        });
+            });
 
-        gY
-            .transition().duration(150)
-            .call(yAxis);
+            y.domain([Math.min(...vals), Math.max(...vals)]);
 
+            car_types.forEach(function(variable) {
+                line
+                    .y(function(d) { return y(d[variable]); });
+
+                d3.select("#type-" + variable)
+                    .transition().duration(300)
+                    .attr("stroke", linecolors(variable))
+                    .attr("d", function(d){
+                        return line(pathdata);
+                    });
+            });
+
+            gY
+                .transition().duration(150)
+                .call(yAxis);
+        }        
     });
 
     $("#ruler").on("update", function() {
-        var x_val = d3.select("#slider").property("value"),
-            x_pos = x(x_val);
+        if (selected_edge) {
+            var x_val = d3.select("#slider").property("value"),
+                x_pos = x(x_val);
 
-        ruler
-            .attr("x1", x_pos)
-            .attr("x2", x_pos);
+            ruler
+                .attr("x1", x_pos)
+                .attr("x2", x_pos);
+
+            var pathdata = data[selected_edge];
+
+            car_types.forEach(function(variable) {
+                var val = pathdata[parseInt(x_val)][variable];
+                d3.select("#val-" + variable)
+                    .text(val);
+            });
+        }
     });
 
     $("#linegraph input")

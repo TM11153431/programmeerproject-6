@@ -10,6 +10,11 @@
     stroke-width: 2px;
 }
 
+table
+{
+    font: 12px sans-serif;
+}
+
 table tr
 {
     cursor: pointer;
@@ -23,5 +28,21 @@ circle
 .checks
 {
     display: inline-block;
-    padding: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.main-block
+{
+    padding: 10px;
+}
+
+.tooltip
+{
+    font-size: 10px;
+}
+
+li
+{
+    font-size: 10px;
 }
