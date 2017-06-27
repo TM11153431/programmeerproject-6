@@ -40,6 +40,12 @@ circle
 .tooltip
 {
     font-size: 10px;
+    text-anchor: middle;
+}
+
+.graphline
+{
+    cursor: pointer;
 }
 
 li

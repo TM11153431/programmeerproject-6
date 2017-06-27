@@ -6,22 +6,25 @@
  */
 
 
-d3.json("../data/histo_data.json", function(error, data) {
+d3.json("data/histo_data.json", function(error, data) {
 
     if (error) throw error;
 
+    // possible values
     var bins = ["", "15-25", "25-35", "35-45", "45-55", "55-65", "65-75", ">75"],
         bins_x_vals = [];
 
     var w = window.innerWidth * 0.45,
         h = window.innerHeight * 0.45;
 
+    // calculate space between bars
     var stepsize = w / bins.length;
 
     bins.forEach(function(d, i) {
         bins_x_vals.push(i * stepsize);
     });
 
+    // create field
     var svg = d3.select("#histogram").append("svg")
             .attr("width", "100%")
             .attr("height", h),
@@ -29,7 +32,7 @@ d3.json("../data/histo_data.json", function(error, data) {
         .append("g")
         .attr("transform", "translate(35, -25)");
 
-
+    // x and y scales
     var hx = d3.scaleOrdinal()
             .domain(bins)
             .range(bins_x_vals),
@@ -37,10 +40,11 @@ d3.json("../data/histo_data.json", function(error, data) {
             .domain([0, 1.0001])
             .range([h, 30]);
 
+    // tooltip
     var tip = histogram.append("text")
-        .attr("class", "tooltip")
-        .style("text-anchor", "middle");
+        .attr("class", "tooltip");
 
+    // create bars
     histogram.selectAll("rect")
         .data(bins)
         .enter().append("rect")
@@ -49,10 +53,12 @@ d3.json("../data/histo_data.json", function(error, data) {
             .attr("transform", "translate(0, 0)")
             .style("fill", "navy");
 
+    // create axes
     var hxaxis = d3.axisBottom(hx),
         hyaxis = d3.axisLeft(hy)
             .ticks(5);
 
+    // call axes in g
     var gX = histogram.append("g")
             .attr("transform", "translate(0, " + h + ")")
             .call(hxaxis),
@@ -65,14 +71,17 @@ d3.json("../data/histo_data.json", function(error, data) {
         if (selected_edge) {
             var total = 0;
 
+            // calculate week number based on slider value
             var slider_val = d3.select("#slider").property("value"),
             week = Math.floor((18 + slider_val / 7 - 1) % 53) + 1;
 
+            // get data and calculate total visitors
             var hist_data = data[selected_edge][week];
             hist_data.forEach(function(d) {
                 total += d.vals.length;
             });
 
+            // set bars based on proportional share of visitors
             histogram.selectAll("rect")
                 .data(hist_data)
                 .transition().duration(150)
@@ -84,6 +93,7 @@ d3.json("../data/histo_data.json", function(error, data) {
                     }
                     return "true";
                 })
+                // set tooltip for each bar
                 .each(function() {
                     d3.select(this)
                             .on("mouseover", function(d) {
@@ -99,7 +109,5 @@ d3.json("../data/histo_data.json", function(error, data) {
                             });
                     });
         }
-
-
     });
 });
