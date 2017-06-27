@@ -70,4 +70,13 @@ Added zooming on the linegraph. Having some issues with properly alignment the a
 Histogram works in a simplified form. There seems to be a sort of a gap in the measured speeds. They are either very high or relatively normal.
 
 # 22/06
-Fixed axes. Histogram placed well and updates correctly. All items are there and functional. Last week will be spent on answering the questions of the challenge and styling the page. 
+Fixed axes. Histogram placed well and updates correctly. All items are there and functional. Last week will be spent on answering the questions of the challenge and styling the page.
+
+# 23/06
+Zooming function turns out to have an error. Somehow, the x-axis translates differently than the paths. Spent a lot of time figuring out how this can be solved but with no success.
+
+# 26/06
+Removed zoom from linegraph since the translations did not work. Removed zoom from graph since it is redundant.
+Added tooltips to the graph and histogram.
+To still get a good idea of the values of the linegraph, the values are displayed after the name in the legend.
+Styled the page somewhat. All functionalities are there and definitive.
