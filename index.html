@@ -34,11 +34,16 @@ Vast Challenge 2017-->
     <div class="col-md-4"></div>
     <div class="col-md-4" id="slider_div"><input type="range" id="slider"></input></div>
     <div class="col-md-4"></div>
-    <center><div class="col-md-12" id="datetext"></div></center>
+    <center>
+        <div class="col-md-12">
+            <span id="pathtext"></span>
+            <span id="datetext"></span>
+        </div>
+    </center>
 
     <div class="col-md-12">
         <div class="col-md-6" class="main-block" id="graph"><center>Simplified map of parc with indication of speeding behavior</center></br></div>
-        <div class="col-md-6" class="main-block" id="histogram"><center>Distribution of driving speeds in week of selected date</center></br></div>
+        <div class="col-md-6" class="main-block" id="histogram"><center>Distribution of driving speeds in week of selected date<span id="hist_n"></span></center></br></div>
     </div>
 
     <div class="col-md-12">
@@ -58,7 +63,7 @@ Vast Challenge 2017-->
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6" class="main-block" id="linegraph"><center>Yearly busyness on slected path per car type</center></br>
+        <div class="col-md-6" class="main-block" id="linegraph"><center>Yearly busyness on selected path per car type</center></br>
             <center>
                 <li class="checks"><input type="checkbox" id="check-1" value="#type-1" checked>Type 1: <span id="val-1"></span></input></li>
                 <li class="checks"><input type="checkbox" id="check-2" value="#type-2" checked>Type 2: <span id="val-2"></input></li>

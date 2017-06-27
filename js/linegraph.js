@@ -24,13 +24,12 @@ d3.json("data/path_busyness.json", function(error, data) {
     // types of vehicles
     var car_types = ["1", "2", "2P", "3", "4", "5", "6"];
 
+    selected_types = ["1", "2", "2P", "3", "4", "5", "6"];
+
     // color scale
     var linecolors = d3.scaleOrdinal()
         .domain(car_types)
         .range(['#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e','#e6ab02','#a6761d']);
-
-    var w = window.innerWidth * 0.45,
-        h = window.innerHeight * 0.45;
 
     // create field
     var svg = d3.select("#linegraph")
@@ -39,15 +38,14 @@ d3.json("data/path_busyness.json", function(error, data) {
         .attr("height", h);
     var linegraph = svg
         .append("g")
-        .attr("transform", "translate(25, -25)");
+        .attr("transform", "translate(35, -25)");
 
     // x and y scales
     var x = d3.scaleLinear()
             .domain([0, dates.length - 1])
-            .range([5, w - 5])
-            .nice(),
+            .range([0, w - 35]),
         y = d3.scaleLinear()
-            .range([h - 5, 30]);
+            .range([h, 30]);
 
     // create axes
     var xAxis = d3.axisBottom(x)
@@ -57,7 +55,7 @@ d3.json("data/path_busyness.json", function(error, data) {
                 return dates[i];
             }),
         yAxis = d3.axisLeft(y)
-            .ticks(5)
+            .ticks(0)
             .tickPadding(8)
             .tickFormat(d3.format(".0f"));
 
@@ -69,6 +67,19 @@ d3.json("data/path_busyness.json", function(error, data) {
         gY = linegraph.append("g")
             .attr("class", "axis axis--y")
             .call(yAxis);
+
+    linegraph.append("text")
+        .text("Date")
+        .attr("class", "axis-label")
+        .attr("x", w - 35)
+        .attr("y", h + 25);
+
+    linegraph.append("text")
+        .text("# visitors")
+        .attr("class", "axis-label")
+        .attr("x", -30)
+        .attr("y", -27)
+        .attr("transform", "rotate(-90)");
 
     // add line for each car type
     car_types.forEach(function(type) {
@@ -116,6 +127,12 @@ d3.json("data/path_busyness.json", function(error, data) {
             // determine y-domain
             y.domain([Math.min(...vals), Math.max(...vals)]);
 
+            // calculate number of ticks (max 5)
+            var tickcount = 5;
+            if (Math.max(...vals) < 5) {
+                tickcount = Math.max(...vals);
+            }
+
             // update line function and draw path for eacht car type
             car_types.forEach(function(variable) {
                 line
@@ -130,6 +147,7 @@ d3.json("data/path_busyness.json", function(error, data) {
             });
 
             // update y-axis
+            yAxis.ticks(tickcount);
             gY
                 .transition().duration(150)
                 .call(yAxis);
@@ -161,14 +179,23 @@ d3.json("data/path_busyness.json", function(error, data) {
     $("#linegraph input")
         .on("click", function() {
 
+            var type = this.value.replace("#type-", ""),
+                index = selected_types.indexOf(type);
+
             // check if checkbox is checked, display accordingly
+            // also remove/add car types from table
             if (this.checked === true) {
                 d3.select(this.value).attr("display", "true");
+                selected_types.push(type);
             }
             else {
                 d3.select(this.value).attr("display", "none");
+                selected_types.splice(index, 1);
             }
 
             $("#linegraph").trigger("update");
+            $("table").trigger("renew");
+
+
         });
 });

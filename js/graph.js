@@ -5,6 +5,9 @@
  * VAST Challenge 2017
  */
 
+ var w = window.innerWidth * 0.45,
+     h = window.innerHeight * 0.45;
+
 
 // global variables
 var edge_ids = [],
@@ -26,17 +29,16 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
 
     if (error) throw error;
 
-    var width = window.innerWidth * 0.45,
-        height = window.innerHeight * 0.45;
+
 
     // input domains of scales
-    var edgedomain = [0, 30],
+    var edgedomain = [0, 20],
         graphdomain = [0,200];
 
     // create svg with g
     var graph_svg = d3.select('#graph').append('svg')
         .attr('width', "100%")
-        .attr('height', height),
+        .attr('height', h),
         g = graph_svg.append("g")
         .attr("class", "everything");
 
@@ -60,7 +62,7 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
     var simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function(d) { return d.id; }))
         .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        .force("center", d3.forceCenter(w / 2, h / 2));
 
     // initialise data
     var keys = Object.keys(data),
@@ -157,7 +159,7 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
                 return edge_id_gen(d.source.id, d.target.id);
             })
             .style("stroke", function(d) {
-                return edgecolor(d.visitors.length * d.rate * d.speed);
+                return edgecolor(d.speeders.length * d.speed);
             })
             .style("display", function(d) {
                 if (d.visitors.length === 0) {
@@ -189,6 +191,9 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
                 // increase stroke width for focus
                 link.style("stroke-width", 2);
                 d3.select(this).style("stroke-width", 5);
+
+                d3.select("#pathtext")
+                    .text(selected_edge + ", ");
 
                 // upate other elements
                 $("table").trigger("renew");

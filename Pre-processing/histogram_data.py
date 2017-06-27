@@ -1,8 +1,9 @@
 import json
 import datetime
 import time
+import math
 
-with open("../data/id_data.json", "r") as f:
+with open("../old/id_data.json", "r") as f:
     ids = json.load(f)
 
 with open("../old/route_per_ID.json") as f:
@@ -17,8 +18,7 @@ with open("walked_paths.json", "r") as f:
 id_array = ids.keys()
 path_array = paths.keys()
 
-weeks = range(1, 53)
-weeks = [str(w) for w in weeks]
+weeks = [str(w) for w in range(0, 58)]
 
 histo_data = {}
 
@@ -27,13 +27,13 @@ for path in path_array:
     for week in weeks:
         histo_data[path][week] = {
             "<15": [],
-            "15-25": [],
-            "25-35": [],
-            "35-45": [],
-            "45-55": [],
-            "55-65": [],
-            "65-75": [],
-            ">75": []
+            "15-20": [],
+            "20-25": [],
+            "25-30": [],
+            "30-35": [],
+            "35-40": [],
+            "40-45": [],
+            ">45": []
         }
 
 
@@ -44,9 +44,10 @@ def path_ID(start, end):
 
 
 def week_nr(x):
-    week = str(datetime.datetime.strptime(x, "%d/%m/%Y %H:%M").isocalendar()[1])
-    if week == "53":
-        week = "52"
+    day_x = datetime.datetime.strptime(x, "%d/%m/%Y %H:%M")
+    day_start = datetime.datetime.strptime("01/05/2015", "%d/%m/%Y")
+    delta = day_x - day_start
+    week = str(math.floor(delta.days / 7))
     return week
 
 
@@ -68,20 +69,20 @@ def daynight(date):
 def speed2bin(speed):
     if speed < 15:
         return "<15"
-    elif 15 <= speed < 25:
-        return "15-25"
-    elif 25 <= speed < 35:
-        return "25-35"
-    elif 35 <= speed < 45:
-        return "35-45"
-    elif 45 <= speed < 55:
-        return "45-55"
-    elif 55 <= speed < 65:
-        return "55-65"
-    elif 65 <= speed < 75:
-        return "65-75"
+    elif 15 <= speed < 20:
+        return "15-20"
+    elif 20 <= speed < 25:
+        return "20-25"
+    elif 25 <= speed < 30:
+        return "25-30"
+    elif 30 <= speed < 35:
+        return "30-35"
+    elif 35 <= speed < 40:
+        return "35-40"
+    elif 40 <= speed < 45:
+        return "40-45"
     else:
-        return ">75"
+        return ">45"
 
 
 for ID in routedata.keys():
@@ -94,7 +95,7 @@ for ID in routedata.keys():
             time.strptime(log["timestamp"], "%d/%m/%Y %H:%M")
         )
         week = week_nr(log["timestamp"])
-        diff = seconds - prev_time - 30
+        diff = seconds - prev_time + 30
 
         location = log["gate"]
 
@@ -103,6 +104,12 @@ for ID in routedata.keys():
             try:
                 steps = links[prev_place][location]["steps"]
                 speed = (steps * 0.06) / (diff / 3600)
+                if speed2bin(speed) == "<15" and speed != 0:
+                    print("under 15")
+                    print(steps)
+                    print(diff)
+                    print(ID)
+                    print(path_ID(location, prev_place))
                 histo_data[path_ID(location, prev_place)][week_nr(log["timestamp"])][speed2bin(speed)].append({
                     "day/night": daynight(log["timestamp"]),
                     "type": ids[ID]["car-type"],

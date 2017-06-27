@@ -4,13 +4,13 @@ import datetime
 
 speeding_year = {}
 
-with open("../Data/graph.json") as f:
+with open("../old/graph.json") as f:
     graphdata = json.load(f)
 
 with open("../old/route_per_ID.json") as f:
     routes = json.load(f)
 
-with open("../data/scatter_data.json", "r") as f:
+with open("../old/scatter_data.json", "r") as f:
     scatter = json.load(f)
 
 
@@ -51,7 +51,7 @@ def calculate_speed(date):
             seconds = time.mktime(
                 time.strptime(log["timestamp"], "%d/%m/%Y %H:%M")
             )
-            diff = seconds - prev_time - 30
+            diff = seconds - prev_time + 30
 
             location = log["gate"]
 
@@ -76,7 +76,7 @@ def calculate_speed(date):
             prev_time = seconds
             prev_place = location
 
-    with open("../data/graph.json", "r") as f:
+    with open("../old/graph.json", "r") as f:
         graphdata_new = json.load(f)
 
     new_links = []

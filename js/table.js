@@ -5,7 +5,7 @@
  * VAST Challenge 2017
  */
 
-var time_text;
+var time_text, selected_types;
 
 d3.json("data/table_data.json", function(error, id_data) {
 
@@ -40,16 +40,18 @@ d3.json("data/table_data.json", function(error, id_data) {
             var info = id_data[ID],
                 route = info.route,
                 start = route[0].timestamp,
-                end = route[route.length - 1];
+                end = route[route.length - 1].timestamp;
 
-                table.row.add([
-                    ID,
-                    info.car_type,
-                    start,
-                    end,
-                    info.number_stops,
-                    info.max_speed.toFixed(2)
-                ]);
+                if ($.inArray(info.car_type, selected_types) !== -1) {
+                    table.row.add([
+                        ID,
+                        info.car_type,
+                        start,
+                        end,
+                        info.number_stops,
+                        info.max_speed.toFixed(2)
+                    ]);
+                }
         });
 
         // display rows
