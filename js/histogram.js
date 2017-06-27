@@ -96,17 +96,17 @@ d3.json("data/histo_data.json", function(error, data) {
                 // set tooltip for each bar
                 .each(function() {
                     d3.select(this)
-                            .on("mouseover", function(d) {
-                                tip
-                                    .text("Count: " + d.vals.length)
-                                    .style("opacity", 1)
-                                    .attr("x", (parseFloat(d3.select(this).attr("x")) + 15) + "px")
-                                    .attr("y", (parseFloat(d3.select(this).attr("y")) - 5) + "px");
-                            })
-                            .on("mouseout", function() {
-                                tip
-                                    .style("opacity", 0);
-                            });
+                        .on("mouseover", function(d) {
+                            tip
+                                .text("Count: " + d.vals.length)
+                                .style("opacity", 1)
+                                .attr("x", (parseFloat(d3.select(this).attr("x")) + 15) + "px")
+                                .attr("y", (parseFloat(d3.select(this).attr("y")) - 5) + "px");
+                        })
+                        .on("mouseout", function() {
+                            tip
+                                .style("opacity", 0);
+                        });
                     });
         }
     });

@@ -5,6 +5,7 @@
  * VAST Challenge 2017
  */
 
+var time_text;
 
 d3.json("data/table_data.json", function(error, id_data) {
 
@@ -26,7 +27,7 @@ d3.json("data/table_data.json", function(error, id_data) {
         }
     });
 
-    var time_text = d3.select("#datetext");
+    time_text = d3.select("#datetext");
 
     $("table").on("renew", function() {
 
@@ -76,25 +77,6 @@ d3.json("data/table_data.json", function(error, id_data) {
         d3.select("#graph").selectAll("line")
             .style("stroke-opacity", 0.2);
 
-        // highlights step in route of visitor
-        function set_focus(id, id_prev, time, line_id, stamp) {
-            setTimeout(function() {
-                if (time !== 0) {
-                    d3.select("#" + id_prev)
-                        .attr("r", 5);
-                    d3.select("#" + id)
-                        .style("opacity", 1)
-                        .attr("r", 10);
-                    d3.select("#" + line_id)
-                        .style("stroke-opacity", 1);
-
-                    // display timestamp under slider
-                    time_text
-                        .text(stamp);
-                }
-            }, time);
-        }
-
         // display each step in route with increasing delay
         for (var i = 0, n = selected_route.length; i < n; i++) {
             var id = selected_route[i].gate,
@@ -122,3 +104,23 @@ d3.json("data/table_data.json", function(error, id_data) {
         }, 600 * selected_route.length);
     });
 });
+
+
+// highlights step in route of visitor
+function set_focus(id, id_prev, time, line_id, stamp) {
+    setTimeout(function() {
+        if (time !== 0) {
+            d3.select("#" + id_prev)
+                .attr("r", 5);
+            d3.select("#" + id)
+                .style("opacity", 1)
+                .attr("r", 10);
+            d3.select("#" + line_id)
+                .style("stroke-opacity", 1);
+
+            // display timestamp under slider
+            time_text
+                .text(stamp);
+        }
+    }, time);
+}

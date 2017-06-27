@@ -17,7 +17,7 @@ d3.json("data/dates.json", function(error, data) {
 });
 
 
-d3.json("../data/path_busyness.json", function(error, data) {
+d3.json("data/path_busyness.json", function(error, data) {
 
     if (error) throw error;
 
