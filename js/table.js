@@ -5,6 +5,8 @@
  * VAST Challenge 2017
  */
 
+var min_stops = 10;
+
 var time_text, selected_types;
 
 d3.json("data/table_data.json", function(error, id_data) {
@@ -21,7 +23,7 @@ d3.json("data/table_data.json", function(error, id_data) {
 
         // make text of row with speeder red
         "createdRow": function(row, r_data, dataIndex) {
-            if ($.inArray(r_data[0], speeder_ids) !== -1) {
+            if (r_data[2] > 25.0) {
                 $(row).css('color', 'red');
             }
         }
@@ -35,21 +37,23 @@ d3.json("data/table_data.json", function(error, id_data) {
         table.clear();
 
         // add row with info for each visitor
-        edge_ids.forEach(function(ID) {
+        edge_ids.forEach(function(log) {
 
-            var info = id_data[ID],
+            var ID = log.id,
+                info = id_data[ID],
                 route = info.route,
                 start = route[0].timestamp,
                 end = route[route.length - 1].timestamp;
 
                 if ($.inArray(info.car_type, selected_types) !== -1) {
                     table.row.add([
+                        log.timestamp,
                         ID,
+                        log.speed.toFixed(2),
                         info.car_type,
                         start,
                         end,
-                        info.number_stops,
-                        info.max_speed.toFixed(2)
+                        info.number_stops
                     ]);
                 }
         });
@@ -64,7 +68,7 @@ d3.json("data/table_data.json", function(error, id_data) {
         var old_text = time_text.text();
 
         // retrieve ID of clicked row
-        selected_id = $(this).closest("tr").find("td")[0].innerHTML;
+        selected_id = $(this).closest("tr").find("td")[1].innerHTML;
         selected_route = id_data[selected_id].route;
 
         // disable all interaction during animation

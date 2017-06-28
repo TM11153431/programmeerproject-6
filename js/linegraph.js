@@ -171,7 +171,7 @@ d3.json("data/path_busyness.json", function(error, data) {
             car_types.forEach(function(variable) {
                 var val = pathdata[parseInt(x_val)][variable];
                 d3.select("#val-" + variable)
-                    .text(val);
+                    .text(": " + val);
             });
         }
     });

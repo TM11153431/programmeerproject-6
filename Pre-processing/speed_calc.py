@@ -65,8 +65,8 @@ def calculate_speed(date):
                         links[prev_place][location]["speed"].append(speed)
                         links[location][prev_place]["speed"].append(speed)
 
-                    links[prev_place][location]["visitors"].append(ID)
-                    links[location][prev_place]["visitors"].append(ID)
+                    links[prev_place][location]["visitors"].append({"id": ID, "timestamp": log["timestamp"], "speed": speed})
+                    links[location][prev_place]["visitors"].append({"id": ID, "timestamp": log["timestamp"], "speed": speed})
                 except:
                     print("error")
                     print(prev_place)

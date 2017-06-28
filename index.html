@@ -2,6 +2,7 @@
 Student number: 10529772
 Programmeerproject
 Vast Challenge 2017-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +26,7 @@ Vast Challenge 2017-->
     <script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.13/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="https://malsup.github.io/jquery.blockUI.js"></script>
 </head>
-<body>
+<body style="background-color:#f3f3f3">
     <div class="col-md-12 w3-bar w3-top w3-black w3-large" style="z-index:4">
         <span class="w3-bar-item w3-right">VAST Challenge 2017, Sven van Dam - 10529772</span>
     </div>
@@ -42,7 +43,7 @@ Vast Challenge 2017-->
     </center>
 
     <div class="col-md-12">
-        <div class="col-md-6" class="main-block" id="graph"><center>Simplified map of parc with indication of speeding behavior</center></br></div>
+        <div class="col-md-6" class="main-block" id="graph"><center>Simplified map of preserve with indication of speeding behavior</center></br></div>
         <div class="col-md-6" class="main-block" id="histogram"><center>Distribution of driving speeds in week of selected date<span id="hist_n"></span></center></br></div>
     </div>
 
@@ -51,12 +52,13 @@ Vast Challenge 2017-->
             <table class="table table-hover table-responsive" id="testtable">
                 <thead>
                     <tr>
+                        <th>Timestamp</th>
                         <th>ID</th>
+                        <th>Speed</th>
                         <th>Type</th>
                         <th>Start</th>
                         <th>End</th>
                         <th>Nr Stops</th>
-                        <th>Max Speed</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,13 +67,13 @@ Vast Challenge 2017-->
         </div>
         <div class="col-md-6" class="main-block" id="linegraph"><center>Yearly busyness on selected path per car type</center></br>
             <center>
-                <li class="checks"><input type="checkbox" id="check-1" value="#type-1" checked>Type 1: <span id="val-1"></span></input></li>
-                <li class="checks"><input type="checkbox" id="check-2" value="#type-2" checked>Type 2: <span id="val-2"></input></li>
-                <li class="checks"><input type="checkbox" id="check-2P" value="#type-2P" checked>Type 2P: <span id="val-2P"></input></li>
-                <li class="checks"><input type="checkbox" id="check-3" value="#type-3" checked>Type 3: <span id="val-3"></input></li>
-                <li class="checks"><input type="checkbox" id="check-4" value="#type-4" checked>Type 4: <span id="val-4"></input></li>
-                <li class="checks"><input type="checkbox" id="check-5" value="#type-5" checked>Type 5: <span id="val-5"></input></li>
-                <li class="checks"><input type="checkbox" id="check-6" value="#type-6" checked>Type 6: <span id="val-6"></input></li>
+                <li class="checks"><input type="checkbox" id="check-1" value="#type-1" checked>Type 1<span id="val-1"></span></input></li>
+                <li class="checks"><input type="checkbox" id="check-2" value="#type-2" checked>Type 2<span id="val-2"></input></li>
+                <li class="checks"><input type="checkbox" id="check-2P" value="#type-2P" checked>Type 2P<span id="val-2P"></input></li>
+                <li class="checks"><input type="checkbox" id="check-3" value="#type-3" checked>Type 3<span id="val-3"></input></li>
+                <li class="checks"><input type="checkbox" id="check-4" value="#type-4" checked>Type 4<span id="val-4"></input></li>
+                <li class="checks"><input type="checkbox" id="check-5" value="#type-5" checked>Type 5<span id="val-5"></input></li>
+                <li class="checks"><input type="checkbox" id="check-6" value="#type-6" checked>Type 6<span id="val-6"></input></li>
         </center>
         </div>
     </div>

@@ -56,3 +56,15 @@ li {
     font-size: 10px;
     text-anchor: end;
 }
+
+.legend-line {
+    shape-rendering:"crispEdges";
+}
+
+.graphlegend {
+    alignment-baseline: middle;
+    font-size: 10px;
+}
+/*body {
+    background-color:#E6E6FA;
+}*/

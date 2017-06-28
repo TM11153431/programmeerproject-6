@@ -80,3 +80,12 @@ Removed zoom from linegraph since the translations did not work. Removed zoom fr
 Added tooltips to the graph and histogram.
 To still get a good idea of the values of the linegraph, the values are displayed after the name in the legend.
 Styled the page somewhat. All functionalities are there and definitive.
+
+# 27/06
+Added small stylistic changes. Discovered that speeds were calculated wrong (30 seconds of time were reduced instead of added as a continuity correction). Recalculated all speeds which greatly changed the results. Abnormal high speeds are not found anymore.
+Changed scale of edge colors accordingly.
+Code is commented and improved. A few magic numbers etc have to be removed.
+
+# 28/06
+Added extra columns to the table. Tweaked the function for the index which determines the color of edges. Speeding is now penalized more than number of speeders.
+Legends are added to graph. Solutions to the challenge are determined and are worked out now. Text and visuals are almost done.

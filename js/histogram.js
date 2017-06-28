@@ -94,7 +94,6 @@ d3.json("data/histo_data.json", function(error, data) {
             }
             d3.select("#hist_n")
                 .text(", n = " + total);
-            console.log(hist_data);
             // set bars based on proportional share of visitors
             histogram.selectAll("rect")
                 .data(hist_data)

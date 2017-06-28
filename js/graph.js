@@ -5,6 +5,7 @@
  * VAST Challenge 2017
  */
 
+
  var w = window.innerWidth * 0.45,
      h = window.innerHeight * 0.45;
 
@@ -67,6 +68,100 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
     // initialise data
     var keys = Object.keys(data),
         graph = data[keys[0]];
+
+    var legend = g.append("g")
+        .attr("transform", "translate(0, 20)");
+
+    var nodelegend = g.append("g")
+        .attr("transform", "translate(0, 240)");
+
+
+    // legend gradient
+    var defs = legend.append("defs");
+
+    var gradient = defs.append("linearGradient")
+        .attr("id", "gradient");
+
+    // vertical gradient
+    gradient
+        .attr("x1", "0%")
+        .attr("y1", "0%")
+        .attr("x2", "0%")
+        .attr("y2", "100%");
+
+    // top color
+    gradient
+        .append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#FF0000");
+
+    // bottom color
+    gradient
+        .append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#90EE90");
+
+    // add to rect
+    legend.append("rect")
+        .attr("width", 10)
+        .attr("height", 200)
+        .style("fill", "url(#gradient)");
+
+    legend.append("text")
+        .attr("class", "graphlegend")
+        .attr("x", 0)
+        .attr("y", -15)
+        .text("Speed index");
+
+
+
+    var labels = [
+        {"h": 0, "y": 20},
+        {"h": 100, "y": 10},
+        {"h": 200, "y": 0}
+    ];
+
+    var node_types = [
+        {"name": "camping", "group": 5},
+        {"name": "entrance", "group": 1},
+        {"name": "gate", "group": 2},
+        {"name": "general-gate", "group": 3},
+        {"name": "ranger-base", "group": 6},
+        {"name": "ranger-stop", "group": 4}
+    ];
+
+    // add labels to legend
+    labels.forEach(function(l) {
+        legend.append("line")
+            .attr("class", "legend-line")
+            .attr("x1", 0)
+            .attr("x2", 15)
+            .attr("y1", l.h)
+            .attr("y2", l.h)
+            .attr("stroke", "black")
+            .attr("stroke-width", "0.5");
+
+        legend.append("text")
+            .attr("class", "graphlegend")
+            .attr("x", 15)
+            .attr("y", l.h)
+            .text(l.y);
+    });
+
+    node_types.forEach(function(type, i) {
+        nodelegend.append("circle")
+            .attr("cy", i * 15)
+            .attr("cx", 5)
+            .attr("r", 5)
+            .attr("fill", color(type.group));
+
+        nodelegend.append("text")
+            .attr("class", "graphlegend")
+            .attr("x", 12)
+            .attr("y", i * 15)
+            .text(type.name);
+    });
+
 
     // set slider behaviour
     d3.select("#slider")
@@ -159,7 +254,7 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
                 return edge_id_gen(d.source.id, d.target.id);
             })
             .style("stroke", function(d) {
-                return edgecolor(d.speeders.length * d.speed);
+                return edgecolor(d.speeders.length * Math.pow(d.speed, 1.3));
             })
             .style("display", function(d) {
                 if (d.visitors.length === 0) {
