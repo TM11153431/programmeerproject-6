@@ -8,26 +8,26 @@ This report will provide a brief technical overview of my tool.
 
 See the readme for functional details of the tool. A short overview of all elements, what they can affect and where they are affected by:
 
-* slider
-** affects: graph, ruler on linegraph, histogram, table
-** affected by: user
+## slider
+* affects: graph, ruler on linegraph, histogram, table
+* affected by: user
 
-* graph
-** affects: histogram, table, linegraph
-** affected by: slider, table
+## graph
+* affects: histogram, table, linegraph
+* affected by: slider, table
 
-* histogram
-** affects: -
-** affected by: slider, graph
+## histogram
+* affects: -
+* affected by: slider, graph
 
-* table
-** affects: graph
-** affected by: graph, slider, checkboxes
+## table
+* affects: graph
+* affected by: graph, slider, checkboxes
 
-* checkboxes
-** affects: table, linegraph
-** affected by: user
+## checkboxes
+* affects: table, linegraph
+* affected by: user
 
-* linegraph
-** affects: -
-** affected by: slider, graph, checkboxes
+## linegraph
+* affects: -
+* affected by: slider, graph, checkboxes
