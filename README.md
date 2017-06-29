@@ -29,7 +29,7 @@ Each of these is discussed more in-depth below. Above the elements is a slider w
 The graph shows a simplified layout of the park. The positions of all nodes are congruent with those on the provided bitmap. The paths are drawn in straight lines, however. If no visitor has crossed a path on the selected day, the path will not be displayed to make the appearance as clean as possible. The color of the nodes represents the type of checkpoint (entrance, camping, general gate, gate, ranger stop or ranger base), the color of the edges is based on a self-created speed index. This index is as follows:
 Let `n` be the number of speeders on a given path on the selected date. Let `s` be the average mph these speeders are above the speed limit. The speeding index is then `n * s^1.3`.
 This index assumes that visitors who drive below the speed limit do no harm. Furthermore, the magnitude of the speeding weighs more heavily than the number of speeders but both are taken in account.
-Hovering over a node show the name of this node. All paths are clickable. When this is done, all other elements are updated (upon loading the page, these are empty). Besides that, the name of the path is shown next to the selected date.
+Hovering over a node show the name of this node. All paths are clickable. When this is done, all other elements are updated (upon loading the page, these are empty). Besides that, the name of the path is shown next to the selected date. The clicked path gets a broader stroke width to make it distinguishable.
 
 # Histogram
 
