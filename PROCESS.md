@@ -1,3 +1,6 @@
+# 06/06
+Discussed the scope of the challenge. Brainstormed on potential patterns we could find. Had a look at the format of the data and the information we can derive from it. All still very exploratory as opposed to many other students who are starting with an idea of what their result shall be.
+
 # 07/06
 Focus will be on analysis and preparation of the data until the end of the week.
 Conclusions have to be drawn from these analyses in order to decide what kind of visualizations should be made.
@@ -89,3 +92,6 @@ Code is commented and improved. A few magic numbers etc have to be removed.
 # 28/06
 Added extra columns to the table. Tweaked the function for the index which determines the color of edges. Speeding is now penalized more than number of speeders.
 Legends are added to graph. Solutions to the challenge are determined and are worked out now. Text and visuals are almost done.
+
+# 29/06
+Finished code. Updated readme and made report etc. All done now, thanks for tuning in.

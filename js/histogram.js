@@ -14,6 +14,10 @@ d3.json("data/histo_data.json", function(error, data) {
     var bins = ["<15", "15-20", "20-25", "25-30", "30-35", "35-40", "40-45", ">45"],
         bins_x_vals = [];
 
+    var offsets = [50, 30],
+        margin = 35,
+        barwidth = 30;
+
     // calculate space between bars
     var stepsize = w / bins.length;
 
@@ -27,15 +31,15 @@ d3.json("data/histo_data.json", function(error, data) {
             .attr("height", h),
         histogram = svg
         .append("g")
-        .attr("transform", "translate(50, -30)");
+        .attr("transform", "translate(" + offsets[0] + ", " + (-1 * offsets[1]) + ")");
 
     // x and y scales
     var hx = d3.scaleOrdinal()
             .domain(bins)
             .range(bins_x_vals),
         hy = d3.scaleLinear()
-            .domain([0, 1.0001])
-            .range([h, 35]);
+            .domain([0, 1.0])
+            .range([h, margin]);
 
     // tooltip
     var tip = histogram.append("text")
@@ -45,8 +49,8 @@ d3.json("data/histo_data.json", function(error, data) {
     histogram.selectAll("rect")
         .data(bins)
         .enter().append("rect")
-            .attr("x", function(d, i) { return hx(d) - 15; })
-            .attr("width", 30)
+            .attr("x", function(d, i) { return hx(d) - barwidth / 2; })
+            .attr("width", barwidth)
             .style("fill", "navy");
 
     // create axes
@@ -59,7 +63,7 @@ d3.json("data/histo_data.json", function(error, data) {
             .attr("transform", "translate(0, " + h + ")")
             .call(hxaxis),
         gY = histogram.append("g")
-            .attr("transform", "translate(-15, 0)")
+            .attr("transform", "translate(" + (-barwidth / 2) + ", 0)")
             .call(hyaxis);
 
     histogram.append("text")
@@ -94,6 +98,7 @@ d3.json("data/histo_data.json", function(error, data) {
             }
             d3.select("#hist_n")
                 .text(", n = " + total);
+
             // set bars based on proportional share of visitors
             histogram.selectAll("rect")
                 .data(hist_data)
@@ -106,6 +111,7 @@ d3.json("data/histo_data.json", function(error, data) {
                     }
                     return "true";
                 })
+                
                 // set tooltip for each bar
                 .each(function() {
                     d3.select(this)

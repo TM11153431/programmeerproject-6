@@ -26,6 +26,8 @@ d3.json("data/path_busyness.json", function(error, data) {
 
     selected_types = ["1", "2", "2P", "3", "4", "5", "6"];
 
+    var offsets = [35, 25];
+
     // color scale
     var linecolors = d3.scaleOrdinal()
         .domain(car_types)
@@ -38,14 +40,14 @@ d3.json("data/path_busyness.json", function(error, data) {
         .attr("height", h);
     var linegraph = svg
         .append("g")
-        .attr("transform", "translate(35, -25)");
+        .attr("transform", "translate(" + offsets[0] + ", " + -offsets[1] + ")");
 
     // x and y scales
     var x = d3.scaleLinear()
             .domain([0, dates.length - 1])
-            .range([0, w - 35]),
+            .range([0, w - offsets[0]]),
         y = d3.scaleLinear()
-            .range([h, 30]);
+            .range([h, offsets[0]]);
 
     // create axes
     var xAxis = d3.axisBottom(x)
@@ -71,8 +73,8 @@ d3.json("data/path_busyness.json", function(error, data) {
     linegraph.append("text")
         .text("Date")
         .attr("class", "axis-label")
-        .attr("x", w - 35)
-        .attr("y", h + 25);
+        .attr("x", w - offsets[0])
+        .attr("y", h + offsets[1]);
 
     linegraph.append("text")
         .text("# visitors")

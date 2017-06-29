@@ -1,5 +1,6 @@
 exclude:
 - /Pre-processing/.*
+- /old/.*
 component_depth: 1
 languages:
 - javascript
