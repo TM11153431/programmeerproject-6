@@ -46,4 +46,4 @@ The histogram is quite straightforward. The relevant week is calculated from the
 
 The table assesses a list of id's which have crossed a path on a given day. It makes a row for each visit and adds extra info of the visitor using its own datafile. When the car type of the visitor is not selected in the checkbox the row is not added. When a row is clicked, the route of the visitor is accessed and each path and node is highlighted one by one.
 
-The linegraph draws a line for each car type on a path. When a path on the graph is clicked, new data is selected and the lines are drawn. If a checkbox is 
+The linegraph draws a line for each car type on a path. When a path on the graph is clicked, new data is selected and the lines are drawn. If a checkbox is deselected, the corresponding line will be hidden. The ruler is updated independently from the lingraph, x position is recalculated if the slider value changes. Number of visitors on the selected day gets updated when the slider value changes
