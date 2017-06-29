@@ -30,7 +30,25 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
 
     if (error) throw error;
 
+    // updates graph
+    function update() {
+        index = d3.select("#slider").property("value");
+        graph = data[keys[index]];
 
+        // update displayed date
+        d3.select("#datetext")
+            .text(dates[index]);
+
+        // feed new data to graph
+        d3.select(".links").selectAll("line")
+            .data(graph.links);
+
+        simulation.force("link")
+            .links(graph.links);
+
+        // redraw
+        ticked();
+    }
 
     // input domains of scales
     var edgedomain = [0, 20],
@@ -113,8 +131,6 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
         .attr("y", -15)
         .text("Speed index");
 
-
-
     var labels = [
         {"h": 0, "y": 20},
         {"h": 100, "y": 10},
@@ -185,26 +201,6 @@ d3.json("data/speeding_graph_data.json", function(error, data) {
             $("#ruler").trigger("update");
             $("#histogram").trigger("update");
         });
-
-    // updates graph
-    function update() {
-        index = d3.select("#slider").property("value");
-        graph = data[keys[index]];
-
-        // update displayed date
-        d3.select("#datetext")
-            .text(dates[index]);
-
-        // feed new data to graph
-        d3.select(".links").selectAll("line")
-            .data(graph.links);
-
-        simulation.force("link")
-            .links(graph.links);
-
-        // redraw
-        ticked();
-    }
 
     // g for all edges
     var link = g.append("g")

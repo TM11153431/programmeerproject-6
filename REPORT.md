@@ -31,3 +31,6 @@ See the readme for functional details of the tool. A short overview of all eleme
 ## linegraph
 * affects: -
 * affected by: slider, graph, checkboxes
+
+The graph, histogram, table and linegraph each have their own javascript file. Info such as the selected date and path are stored in global variables so that all elements can access it.
+The graph file is only affected as a whole by the slider. How to handle changes in the slider is defined in an `update()` function and the `.on("click")`. All other updates are hadled with jQuey using the `$("x").trigger("..")` and `$("x").on("..")` method. This allows to access elements which lie out of the scope of where the action is triggered.
