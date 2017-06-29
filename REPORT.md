@@ -41,9 +41,12 @@ All of this gets done after the relevant datafile has been loaded. Each element 
 
 The creation of the graph relies on the `forcesimulation` method in d3v4. The code required for this can be somewhat hard to interpret. Essentially, a set of nodes gets defined with an x and y position. Liks between these nodes are then given and the whole is drawn. The resulting circles and paths have all regular options.
 When the slider value changes, data of the new day is selected and the speed indexes for the colors are recalculated.
+The function `edge_id_gen` creates an ID for a path. The path from A to B and from B to A will result in the same ID.
+The function `update` links new data to the graph, the function `ticked` (re)draws the graph.
 
 The histogram is quite straightforward. The relevant week is calculated from the slider value and the relevant data is then loaded. Total number observations is calculated and height of the bar is determined by the proportion of the observations in each bin.
 
 The table assesses a list of id's which have crossed a path on a given day. It makes a row for each visit and adds extra info of the visitor using its own datafile. When the car type of the visitor is not selected in the checkbox the row is not added. When a row is clicked, the route of the visitor is accessed and each path and node is highlighted one by one.
+The function `set_focus` selects the previous node in the route of the visitor, resets the radius, enlarges the radius of the next visited node and highlights the path between those two by increasing the opacity.
 
-The linegraph draws a line for each car type on a path. When a path on the graph is clicked, new data is selected and the lines are drawn. If a checkbox is deselected, the corresponding line will be hidden. The ruler is updated independently from the lingraph, x position is recalculated if the slider value changes. Number of visitors on the selected day gets updated when the slider value changes
+The linegraph draws a line for each car type on a path. When a path on the graph is clicked, new data is selected and the lines are drawn. If a checkbox is deselected, the corresponding line will be hidden. The ruler is updated independently from the lingraph, x position is recalculated if the slider value changes. Number of visitors on the selected day gets updated when the slider value changes.
