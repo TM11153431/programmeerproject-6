@@ -14,7 +14,7 @@ with open("walked_paths.json") as f:
 with open("../data/speeding_graph_data.json") as f:
     speeding_data = json.load(f)
 
-with open("../data/id_data.json", "r") as f:
+with open("../old/id_data.json", "r") as f:
     id_data = json.load(f)
 
 ids = []
