@@ -37,4 +37,13 @@ The graph file is only affected as a whole by the slider. How to handle changes 
 Clicking on a row in the table alters the visual appearance of the graph but does not alter the data. The table script itself selects the relevant paths and nodes and highlights those as required.
 
 Each of the javascript files consists of a part where the elements are created and a part which defines how to handle update triggers.
-All of this gets done after the relevant datafile has been loaded.
+All of this gets done after the relevant datafile has been loaded. Each element relies on its own datafile. All data is in json format. At the highest level the data is divided by either date or id of the visitor or path. The deeper structure of the datafiles depends on what is relevant for the given visualization.
+
+The creation of the graph relies on the `forcesimulation` method in d3v4. The code required for this can be somewhat hard to interpret. Essentially, a set of nodes gets defined with an x and y position. Liks between these nodes are then given and the whole is drawn. The resulting circles and paths have all regular options.
+When the slider value changes, data of the new day is selected and the speed indexes for the colors are recalculated.
+
+The histogram is quite straightforward. The relevant week is calculated from the slider value and the relevant data is then loaded. Total number observations is calculated and height of the bar is determined by the proportion of the observations in each bin.
+
+The table assesses a list of id's which have crossed a path on a given day. It makes a row for each visit and adds extra info of the visitor using its own datafile. When the car type of the visitor is not selected in the checkbox the row is not added. When a row is clicked, the route of the visitor is accessed and each path and node is highlighted one by one.
+
+The linegraph draws a line for each car type on a path. When a path on the graph is clicked, new data is selected and the lines are drawn. If a checkbox is 
